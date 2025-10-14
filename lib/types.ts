@@ -4,6 +4,7 @@ export interface GameData extends Record<string, unknown> {
   creator: string;
   impostor: string;
   start: boolean;
+  lastWord?: string;
 }
 
 export interface GameDocument {

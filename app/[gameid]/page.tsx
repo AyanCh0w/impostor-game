@@ -113,7 +113,14 @@ export default function GamePage({ params }: GamePageProps) {
               <Button
                 onClick={async () => {
                   if (gameData) {
-                    const updatedData = { ...gameData.data, start: false };
+                    // Store the current word as the last word when stopping the game
+                    const currentWord =
+                      impostorPairs[gameData.data.wordIndex][0];
+                    const updatedData = {
+                      ...gameData.data,
+                      start: false,
+                      lastWord: currentWord,
+                    };
                     await setDocument("games", gameid, updatedData);
                   }
                 }}
@@ -128,6 +135,18 @@ export default function GamePage({ params }: GamePageProps) {
         ) : (
           /* Game Setup State */
           <div className="space-y-6">
+            {/* Last Game Word Display */}
+            {gameData?.data.lastWord && (
+              <div className="bg-muted border rounded-lg p-4 text-center">
+                <p className="text-sm text-muted-foreground mb-1">
+                  Last Game's Word
+                </p>
+                <p className="text-xl font-bold text-primary">
+                  {gameData.data.lastWord}
+                </p>
+              </div>
+            )}
+
             <div className="space-y-3">
               <h2 className="text-lg font-semibold text-center">
                 Players ({gameData?.data.users.length || 0})

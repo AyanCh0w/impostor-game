@@ -144,7 +144,7 @@ export default function Home() {
       </div>
       <footer className="fixed bottom-2 left-0 right-0 flex justify-center pointer-events-none">
         <span className="text-xs text-muted-foreground select-none">
-          v0.1.2 (Imposter + Word Overhaul)
+          v0.1.3 (Last word view)
         </span>
       </footer>
     </div>
