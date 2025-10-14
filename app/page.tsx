@@ -13,6 +13,7 @@ export default function Home() {
   >([]);
 
   const createGame = async (): Promise<string> => {
+    navigator.vibrate(30);
     const newDoc = doc(db, "games", Math.random().toString(36).substring(2, 6));
     await setDoc(newDoc, {
       users: [getOrCreateUserId()],
@@ -26,6 +27,7 @@ export default function Home() {
   };
 
   const fetchGames = async () => {
+    navigator.vibrate(30);
     const games = await getDocs(collection(db, "games"));
     setActiveGames(games.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
   };

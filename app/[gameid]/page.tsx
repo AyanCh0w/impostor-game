@@ -38,6 +38,7 @@ export default function GamePage({ params }: GamePageProps) {
   }, [gameid]);
 
   const startGame = (): void => {
+    navigator.vibrate(30);
     const startedGame = gameData;
     if (startedGame) {
       startedGame.data.start = true;
@@ -55,6 +56,7 @@ export default function GamePage({ params }: GamePageProps) {
   };
 
   const endGame = async (): Promise<void> => {
+    navigator.vibrate(30);
     try {
       const result = await deleteDocument("games", gameid);
       if (result.success) {
