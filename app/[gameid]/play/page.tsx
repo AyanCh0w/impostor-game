@@ -96,7 +96,7 @@ export default function JoinGamePage({ params }: GamePageProps) {
                 <div className="text-center space-y-2">
                   <p className="text-sm text-muted-foreground">The word is:</p>
                   <p className="text-2xl font-bold text-red-700">
-                    {impostorPairs[gameData.data.wordIndex][0]}
+                    {impostorPairs[gameData.data.wordIndex][1]}
                   </p>
                 </div>
               ) : (
