@@ -1,5 +1,5 @@
 export interface GameData extends Record<string, unknown> {
-  word: string;
+  wordIndex: number;
   users: string[];
   creator: string;
   impostor: string;

@@ -12,7 +12,7 @@ import {
 import { GameDocument, GamePageProps } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { impostorWords } from "@/lib/words";
+import { impostorPairs } from "@/lib/words";
 
 export default function GamePage({ params }: GamePageProps) {
   const { gameid } = use(params);
@@ -41,9 +41,9 @@ export default function GamePage({ params }: GamePageProps) {
     const startedGame = gameData;
     if (startedGame) {
       startedGame.data.start = true;
-      // Select a random word from the impostorWords array
-      const randomWordIndex = Math.floor(Math.random() * impostorWords.length);
-      startedGame.data.word = impostorWords[randomWordIndex];
+      // Select a random word pair index from the impostorPairs array
+      const randomWordIndex = Math.floor(Math.random() * impostorPairs.length);
+      startedGame.data.wordIndex = randomWordIndex;
       // Select a random user from the users array to be the impostor
       const userList = startedGame.data.users;
       const randomIndex = Math.floor(Math.random() * userList.length);
@@ -99,11 +99,17 @@ export default function GamePage({ params }: GamePageProps) {
                     Try to figure out the word without revealing you don&apos;t
                     know it.
                   </p>
+                  <p className="text-sm text-muted-foreground">Your word is:</p>
+                  <p className="text-2xl font-bold text-red-950">
+                    {impostorPairs[gameData.data.wordIndex][1]}
+                  </p>
                 </div>
               ) : (
                 <div className="text-center space-y-2">
                   <p className="text-sm text-muted-foreground">The word is:</p>
-                  <p className="text-2xl font-bold">{gameData.data.word}</p>
+                  <p className="text-2xl font-bold">
+                    {impostorPairs[gameData.data.wordIndex][0]}
+                  </p>
                 </div>
               )}
             </div>

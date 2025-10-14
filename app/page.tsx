@@ -7,9 +7,10 @@ import { doc } from "firebase/firestore";
 import { getOrCreateUserId } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { animate } from "motion";
+import Image from "next/image";
 
 export default function Home() {
-  const logoRef = useRef<HTMLImageElement | null>(null);
+  const logoRef = useRef<HTMLDivElement | null>(null);
   const [activeGames, setActiveGames] = useState<
     Array<{ id: string; users?: string[]; [key: string]: unknown }>
   >([]);
@@ -61,13 +62,20 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 gap-6 sm:gap-8">
       <div className="text-center space-y-2">
-        <img
+        <div
           ref={logoRef}
-          src="/app-logo.svg"
-          alt="Impostor Game Logo"
           className="mx-auto w-24 h-24 sm:w-28 sm:h-28 select-none"
-          draggable={false}
-        />
+        >
+          <Image
+            src="/app-logo.svg"
+            alt="Impostor Game Logo"
+            width={112}
+            height={112}
+            className="w-full h-full"
+            draggable={false}
+            priority
+          />
+        </div>
         <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
           Imposter Game
         </h1>
@@ -134,6 +142,11 @@ export default function Home() {
           Create New Game
         </Button>
       </div>
+      <footer className="fixed bottom-2 left-0 right-0 flex justify-center pointer-events-none">
+        <span className="text-xs text-muted-foreground select-none">
+          v0.1.2 (Imposter + Word Overhaul)
+        </span>
+      </footer>
     </div>
   );
 }

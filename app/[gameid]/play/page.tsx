@@ -15,6 +15,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 
 import { GameDocument, GamePageProps } from "@/lib/types";
+import { impostorPairs } from "@/lib/words";
 
 export default function JoinGamePage({ params }: GamePageProps) {
   const { gameid } = use(params);
@@ -98,11 +99,17 @@ export default function JoinGamePage({ params }: GamePageProps) {
                     Try to figure out the word without revealing you don&apos;t
                     know it.
                   </p>
+                  <p className="text-sm text-muted-foreground">Your word is:</p>
+                  <p className="text-2xl font-bold text-red-950">
+                    {impostorPairs[gameData.data.wordIndex][1]}
+                  </p>
                 </div>
               ) : (
                 <div className="text-center space-y-2">
                   <p className="text-sm text-muted-foreground">The word is:</p>
-                  <p className="text-2xl font-bold">{gameData.data.word}</p>
+                  <p className="text-2xl font-bold">
+                    {impostorPairs[gameData.data.wordIndex][0]}
+                  </p>
                 </div>
               )}
             </div>
