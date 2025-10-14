@@ -25,13 +25,13 @@ export default function Home() {
     return newDoc.id;
   };
 
+  const fetchGames = async () => {
+    const games = await getDocs(collection(db, "games"));
+    setActiveGames(games.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+  };
+
   useEffect(() => {
     getOrCreateUserId();
-
-    const fetchGames = async () => {
-      const games = await getDocs(collection(db, "games"));
-      setActiveGames(games.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-    };
     fetchGames();
   }, []);
 
@@ -47,7 +47,7 @@ export default function Home() {
       </div>
 
       <div>
-        <div>
+        <div className="flex flex-col">
           <h2 className="mb-2 text-lg font-semibold text-center">
             Join Active Game
           </h2>
@@ -72,13 +72,20 @@ export default function Home() {
               return null; // Don't render anything if condition fails
             })}
           </div>
+          <Button
+            variant={"outline"}
+            className="w-fit h-fit mx-auto mt-2"
+            onClick={fetchGames}
+          >
+            Reload
+          </Button>
         </div>
         <div className="text-center">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
+            <div className="relative flex justify-center text-xs uppercase my-4">
               <span className="bg-background px-2 text-muted-foreground">
                 Or
               </span>
