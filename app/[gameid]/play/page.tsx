@@ -125,7 +125,7 @@ export default function JoinGamePage({ params }: GamePageProps) {
             {gameData?.data.lastWord && (
               <div className="bg-muted border rounded-lg p-4 text-center">
                 <p className="text-sm text-muted-foreground mb-1">
-                  Last Game's Word
+                  Last Game&apos;s Word
                 </p>
                 <p className="text-xl font-bold text-primary">
                   {gameData.data.lastWord}
