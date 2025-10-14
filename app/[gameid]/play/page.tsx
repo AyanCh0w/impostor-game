@@ -38,7 +38,6 @@ export default function JoinGamePage({ params }: GamePageProps) {
   // When the component mounts, add the user to the game doc
   useEffect(() => {
     async function joinGame() {
-      navigator.vibrate(30);
       const userId = getOrCreateUserId();
       const gameRef = doc(db, "games", gameid);
       const gameSnap = await getDoc(gameRef);
@@ -55,7 +54,6 @@ export default function JoinGamePage({ params }: GamePageProps) {
   }, [gameid]);
 
   const leaveGame = async () => {
-    navigator.vibrate(30);
     try {
       const gameRef = doc(db, "games", gameid);
       await updateDoc(gameRef, {
