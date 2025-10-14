@@ -6,12 +6,6 @@ import { db, deleteDocument, getDocumentById } from "@/lib/firebase";
 import { doc } from "firebase/firestore";
 import { getOrCreateUserId } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-import { toast } from "sonner";
 
 export default function Home() {
   const [activeGames, setActiveGames] = useState<
@@ -52,46 +46,7 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="w-full max-w-sm space-y-6">
-        <div className="text-center space-y-3">
-          <h2 className="text-lg sm:text-xl font-semibold">Join Game</h2>
-          <p className="text-sm text-muted-foreground">
-            Enter the 4-digit game code
-          </p>
-          <InputOTP
-            maxLength={4}
-            onComplete={async (value) => {
-              const gameData = await getDocumentById("games", value);
-              if (gameData) {
-                window.location.href = `/${value}/play`;
-              } else {
-                toast.error("Game not found");
-              }
-            }}
-            className="justify-center"
-          >
-            <InputOTPGroup className="mx-auto">
-              <InputOTPSlot index={0} className="w-12 h-12 text-lg" />
-              <InputOTPSlot index={1} className="w-12 h-12 text-lg" />
-              <InputOTPSlot index={2} className="w-12 h-12 text-lg" />
-              <InputOTPSlot index={3} className="w-12 h-12 text-lg" />
-            </InputOTPGroup>
-          </InputOTP>
-        </div>
-
-        <div className="text-center">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or
-              </span>
-            </div>
-          </div>
-        </div>
-
+      <div>
         <div>
           <h2 className="mb-2 text-lg font-semibold text-center">
             Join Active Game
