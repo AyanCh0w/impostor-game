@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { getDocs, setDoc, collection } from "firebase/firestore";
-import { db, deleteDocument, getDocumentById } from "@/lib/firebase";
+import { db, deleteDocument } from "@/lib/firebase";
 import { doc } from "firebase/firestore";
 import { getOrCreateUserId } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
@@ -41,23 +41,19 @@ export default function Home() {
 
   useEffect(() => {
     if (!logoRef.current) return;
-    const frames: any = {
+    const frames = {
       transform: [
         "translateY(-12px) rotate(-8deg)",
         "translateY(12px) rotate(8deg)",
         "translateY(-12px) rotate(-8deg)",
       ],
     };
-    const options: any = {
+    const options = {
       duration: 8,
       easing: "ease-in-out",
-      repeat: Infinity,
+      iterations: Infinity,
     };
-    const controls = animate(
-      logoRef.current as Element,
-      frames as any,
-      options
-    );
+    const controls = animate(logoRef.current as Element, frames, options);
 
     return () => {
       controls.stop();
