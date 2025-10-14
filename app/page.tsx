@@ -5,9 +5,11 @@ import { getDocs, setDoc, collection } from "firebase/firestore";
 import { db, deleteDocument, getDocumentById } from "@/lib/firebase";
 import { doc } from "firebase/firestore";
 import { getOrCreateUserId } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { animate } from "motion";
 
 export default function Home() {
+  const logoRef = useRef<HTMLImageElement | null>(null);
   const [activeGames, setActiveGames] = useState<
     Array<{ id: string; users?: string[]; [key: string]: unknown }>
   >([]);
@@ -37,9 +39,41 @@ export default function Home() {
     fetchGames();
   }, []);
 
+  useEffect(() => {
+    if (!logoRef.current) return;
+    const frames: any = {
+      transform: [
+        "translateY(-12px) rotate(-8deg)",
+        "translateY(12px) rotate(8deg)",
+        "translateY(-12px) rotate(-8deg)",
+      ],
+    };
+    const options: any = {
+      duration: 8,
+      easing: "ease-in-out",
+      repeat: Infinity,
+    };
+    const controls = animate(
+      logoRef.current as Element,
+      frames as any,
+      options
+    );
+
+    return () => {
+      controls.stop();
+    };
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 gap-6 sm:gap-8">
       <div className="text-center space-y-2">
+        <img
+          ref={logoRef}
+          src="/app-logo.svg"
+          alt="Impostor Game Logo"
+          className="mx-auto w-24 h-24 sm:w-28 sm:h-28 select-none"
+          draggable={false}
+        />
         <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
           Imposter Game
         </h1>
