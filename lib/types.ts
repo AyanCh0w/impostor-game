@@ -1,4 +1,4 @@
-export interface GameData {
+export interface GameData extends Record<string, unknown> {
   word: string;
   users: string[];
   creator: string;

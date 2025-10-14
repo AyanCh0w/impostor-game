@@ -38,7 +38,7 @@ export default function GamePage({ params }: GamePageProps) {
   }, [gameid]);
 
   const startGame = (): void => {
-    let startedGame = gameData;
+    const startedGame = gameData;
     if (startedGame) {
       startedGame.data.start = true;
       // Select a random word from the impostorWords array
@@ -96,8 +96,8 @@ export default function GamePage({ params }: GamePageProps) {
                 <div className="text-center space-y-2">
                   <p className="font-bold text-lg">You are the IMPOSTOR!</p>
                   <p className="text-sm text-muted-foreground">
-                    Try to figure out the word without revealing you don't know
-                    it.
+                    Try to figure out the word without revealing you don&apos;t
+                    know it.
                   </p>
                 </div>
               ) : (

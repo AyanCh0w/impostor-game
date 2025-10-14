@@ -12,10 +12,11 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { toast } from "sonner";
-import { GameData, GameDocument } from "@/lib/types";
 
 export default function Home() {
-  const [activeGames, setActiveGames] = useState<any[]>([]);
+  const [activeGames, setActiveGames] = useState<
+    Array<{ id: string; users?: string[]; [key: string]: unknown }>
+  >([]);
 
   const createGame = async (): Promise<string> => {
     const newDoc = doc(db, "games", Math.random().toString(36).substring(2, 6));
@@ -97,7 +98,7 @@ export default function Home() {
           </h2>
           <div className="flex flex-col gap-2">
             {activeGames.map((doc, idx) => {
-              if (doc.users.length > 0) {
+              if (doc.users && doc.users.length > 0) {
                 return (
                   <Button
                     key={idx}

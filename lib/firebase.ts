@@ -55,7 +55,7 @@ export async function getDocumentById(
 export async function setDocument(
   collectionName: string,
   documentId: string,
-  data: any
+  data: Record<string, unknown> //what is a record bruh thank god for cursor
 ) {
   try {
     const docRef = doc(db, collectionName, documentId);
@@ -88,7 +88,7 @@ export async function deleteDocument(
 export function subscribeToDocument(
   collectionName: string,
   documentId: string,
-  callback: (data: any) => void
+  callback: (data: { id: string; data: Record<string, unknown> } | null) => void
 ): Unsubscribe {
   const docRef = doc(db, collectionName, documentId);
 
