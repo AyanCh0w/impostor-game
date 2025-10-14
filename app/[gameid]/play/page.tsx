@@ -94,14 +94,9 @@ export default function JoinGamePage({ params }: GamePageProps) {
             <div className="bg-card border rounded-lg p-4 space-y-3">
               {gameData.data.impostor === userId ? (
                 <div className="text-center space-y-2">
-                  <p className="font-bold text-lg">You are the IMPOSTOR!</p>
-                  <p className="text-sm text-muted-foreground">
-                    Try to figure out the word without revealing you don&apos;t
-                    know it.
-                  </p>
-                  <p className="text-sm text-muted-foreground">Your word is:</p>
-                  <p className="text-2xl font-bold text-red-950">
-                    {impostorPairs[gameData.data.wordIndex][1]}
+                  <p className="text-sm text-muted-foreground">The word is:</p>
+                  <p className="text-2xl font-bold text-red-700">
+                    {impostorPairs[gameData.data.wordIndex][0]}
                   </p>
                 </div>
               ) : (
