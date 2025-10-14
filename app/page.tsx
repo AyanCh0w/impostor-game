@@ -74,7 +74,7 @@ export default function Home() {
           Imposter Game
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base">
-          A fun group guessing game
+          A fun word guessing game
         </p>
       </div>
 
@@ -83,13 +83,6 @@ export default function Home() {
           <h2 className="mb-2 text-lg font-semibold text-center">
             Join Active Game
           </h2>
-          <Button
-            variant={"outline"}
-            className="w-fit h-fit mx-auto mb-2"
-            onClick={fetchGames}
-          >
-            Reload
-          </Button>
           <div className="flex flex-col gap-2">
             {activeGames.map((doc, idx) => {
               if (doc.users && doc.users.length > 0) {
@@ -111,6 +104,13 @@ export default function Home() {
               return null; // Don't render anything if condition fails
             })}
           </div>
+          <Button
+            variant={"outline"}
+            className="w-fit h-fit mx-auto mt-2"
+            onClick={fetchGames}
+          >
+            Reload
+          </Button>
         </div>
         <div className="text-center">
           <div className="relative">
@@ -136,11 +136,6 @@ export default function Home() {
           Create New Game
         </Button>
       </div>
-      <footer className="fixed bottom-2 left-0 right-0 flex justify-center pointer-events-none">
-        <span className="text-xs text-muted-foreground select-none">
-          v0.1.1 (Added impostor fake word)
-        </span>
-      </footer>
     </div>
   );
 }

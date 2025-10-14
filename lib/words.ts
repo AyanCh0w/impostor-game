@@ -223,14 +223,3 @@ export const impostorWords = [
   "order",
   "chaos",
 ];
-
-export function getRandomImpostorWord(exclude?: string): string {
-  const pool = exclude
-    ? impostorWords.filter((w) => w !== exclude)
-    : impostorWords;
-  if (pool.length === 0) {
-    return exclude ?? "";
-  }
-  const index = Math.floor(Math.random() * pool.length);
-  return pool[index];
-}

@@ -15,7 +15,6 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 
 import { GameDocument, GamePageProps } from "@/lib/types";
-import { getRandomImpostorWord } from "@/lib/words";
 
 export default function JoinGamePage({ params }: GamePageProps) {
   const { gameid } = use(params);
@@ -96,10 +95,10 @@ export default function JoinGamePage({ params }: GamePageProps) {
             <div className="bg-card border rounded-lg p-4 space-y-3">
               {gameData.data.impostor === userId ? (
                 <div className="text-center space-y-2">
-                  /here
-                  <p className="text-sm text-muted-foreground">The word is:</p>
-                  <p className="text-2xl font-bold text-red-900">
-                    {getRandomImpostorWord()}
+                  <p className="font-bold text-lg">You are the IMPOSTOR!</p>
+                  <p className="text-sm text-muted-foreground">
+                    Try to figure out the word without revealing you don&apos;t
+                    know it.
                   </p>
                 </div>
               ) : (
@@ -126,18 +125,6 @@ export default function JoinGamePage({ params }: GamePageProps) {
               <p className="font-semibold">
                 Waiting for host to start the game
               </p>
-              {gameData?.data.word === "" ? (
-                <div>
-                  <p>Appears after game</p>
-                </div>
-              ) : (
-                <div>
-                  <h3>Last word:</h3>
-                  <p className="mono p-2 rounded-xl bg-white w-fit mx-auto">
-                    {gameData?.data.word}
-                  </p>
-                </div>
-              )}
             </div>
 
             <div className="space-y-3">
