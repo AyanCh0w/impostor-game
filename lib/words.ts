@@ -1,4 +1,187 @@
-export const impostorPairs: [string, string][] = [
+// Theme definitions
+export const themes = {
+  random: "Random",
+  clashroyale: "Clash Royale",
+  fortnite: "Fortnite",
+  teachers: "Teachers",
+  animals: "Animals",
+  food: "Food",
+  movies: "Movies",
+  sports: "Sports",
+} as const;
+
+export type ThemeKey = keyof typeof themes;
+
+// Clash Royale themed pairs
+export const clashRoyalePairs: [string, string][] = [
+  ["princess", "crown"],
+  ["giant", "tower"],
+  ["wizard", "spell"],
+  ["archer", "arrow"],
+  ["knight", "sword"],
+  ["barbarian", "rage"],
+  ["goblin", "spear"],
+  ["skeleton", "bone"],
+  ["dragon", "fire"],
+  ["balloon", "bomb"],
+  ["minion", "swarm"],
+  ["pekka", "armor"],
+  ["hog", "hammer"],
+  ["musketeer", "rifle"],
+  ["valkyrie", "axe"],
+  ["witch", "spell"],
+  ["sparky", "charge"],
+  ["lava", "hound"],
+  ["mega", "knight"],
+  ["bandit", "dash"],
+];
+
+// Fortnite themed pairs
+export const fortnitePairs: [string, string][] = [
+  ["battle", "royale"],
+  ["storm", "circle"],
+  ["chest", "loot"],
+  ["weapon", "damage"],
+  ["building", "material"],
+  ["squad", "team"],
+  ["elimination", "victory"],
+  ["drop", "island"],
+  ["zone", "safe"],
+  ["health", "shield"],
+  ["ammo", "reload"],
+  ["sniper", "scope"],
+  ["shotgun", "close"],
+  ["assault", "rifle"],
+  ["pistol", "sidearm"],
+  ["grenade", "explosion"],
+  ["medkit", "heal"],
+  ["backpack", "inventory"],
+  ["emote", "dance"],
+  ["skin", "outfit"],
+];
+
+// Teachers themed pairs
+export const teachersPairs: [string, string][] = [
+  ["homework", "assignment"],
+  ["test", "grade"],
+  ["classroom", "desk"],
+  ["chalkboard", "lesson"],
+  ["textbook", "chapter"],
+  ["pencil", "write"],
+  ["eraser", "mistake"],
+  ["ruler", "measure"],
+  ["calculator", "math"],
+  ["globe", "geography"],
+  ["microscope", "science"],
+  ["dictionary", "word"],
+  ["backpack", "school"],
+  ["lunch", "cafeteria"],
+  ["recess", "playground"],
+  ["detention", "punishment"],
+  ["principal", "office"],
+  ["library", "books"],
+  ["gym", "exercise"],
+  ["art", "creative"],
+];
+
+// Animals themed pairs
+export const animalsPairs: [string, string][] = [
+  ["lion", "roar"],
+  ["elephant", "trunk"],
+  ["giraffe", "neck"],
+  ["zebra", "stripes"],
+  ["monkey", "swing"],
+  ["penguin", "slide"],
+  ["dolphin", "jump"],
+  ["whale", "spout"],
+  ["shark", "fin"],
+  ["octopus", "tentacle"],
+  ["butterfly", "wings"],
+  ["bee", "honey"],
+  ["spider", "web"],
+  ["snake", "slither"],
+  ["frog", "hop"],
+  ["rabbit", "carrot"],
+  ["squirrel", "nut"],
+  ["bear", "hibernate"],
+  ["wolf", "howl"],
+  ["fox", "sneak"],
+];
+
+// Food themed pairs
+export const foodPairs: [string, string][] = [
+  ["pizza", "slice"],
+  ["burger", "patty"],
+  ["sandwich", "bread"],
+  ["salad", "lettuce"],
+  ["soup", "bowl"],
+  ["pasta", "noodle"],
+  ["rice", "grain"],
+  ["bread", "toast"],
+  ["cheese", "melt"],
+  ["milk", "pour"],
+  ["juice", "squeeze"],
+  ["coffee", "brew"],
+  ["tea", "steep"],
+  ["cake", "frosting"],
+  ["cookie", "bake"],
+  ["ice", "cream"],
+  ["chocolate", "sweet"],
+  ["apple", "crunch"],
+  ["banana", "peel"],
+  ["orange", "juice"],
+];
+
+// Movies themed pairs
+export const moviesPairs: [string, string][] = [
+  ["action", "explosion"],
+  ["comedy", "laugh"],
+  ["drama", "emotion"],
+  ["horror", "scare"],
+  ["romance", "love"],
+  ["thriller", "suspense"],
+  ["sci-fi", "future"],
+  ["fantasy", "magic"],
+  ["western", "cowboy"],
+  ["musical", "sing"],
+  ["documentary", "real"],
+  ["animation", "cartoon"],
+  ["sequel", "continue"],
+  ["prequel", "before"],
+  ["remake", "again"],
+  ["trailer", "preview"],
+  ["credits", "end"],
+  ["director", "vision"],
+  ["actor", "perform"],
+  ["script", "dialogue"],
+];
+
+// Sports themed pairs
+export const sportsPairs: [string, string][] = [
+  ["football", "touchdown"],
+  ["basketball", "hoop"],
+  ["soccer", "goal"],
+  ["tennis", "racket"],
+  ["golf", "club"],
+  ["baseball", "bat"],
+  ["hockey", "puck"],
+  ["swimming", "pool"],
+  ["running", "track"],
+  ["cycling", "bike"],
+  ["boxing", "punch"],
+  ["wrestling", "pin"],
+  ["volleyball", "spike"],
+  ["badminton", "shuttlecock"],
+  ["cricket", "wicket"],
+  ["rugby", "tackle"],
+  ["skiing", "slope"],
+  ["surfing", "wave"],
+  ["climbing", "rope"],
+  ["archery", "target"],
+];
+
+// Original random pairs
+export const randomPairs: [string, string][] = [
   ["library", "scholar"],
   ["volcano", "pressure"],
   ["harbor", "anchor"],
@@ -190,3 +373,29 @@ export const impostorPairs: [string, string][] = [
   ["pattern", "repeat"],
   ["order", "align"],
 ];
+
+// Function to get word pairs based on theme
+export function getWordPairsByTheme(theme: ThemeKey): [string, string][] {
+  switch (theme) {
+    case "clashroyale":
+      return clashRoyalePairs;
+    case "fortnite":
+      return fortnitePairs;
+    case "teachers":
+      return teachersPairs;
+    case "animals":
+      return animalsPairs;
+    case "food":
+      return foodPairs;
+    case "movies":
+      return moviesPairs;
+    case "sports":
+      return sportsPairs;
+    case "random":
+    default:
+      return randomPairs;
+  }
+}
+
+// Backward compatibility - keep the original export
+export const impostorPairs = randomPairs;
