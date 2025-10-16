@@ -12,13 +12,37 @@ import {
 import { GameDocument, GamePageProps } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { impostorPairs } from "@/lib/words";
+import {
+  impostorPairs,
+  getWordPairsByTheme,
+  themes,
+  ThemeKey,
+} from "@/lib/words";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function GamePage({ params }: GamePageProps) {
   const { gameid } = use(params);
   const [userId, setUserId] = useState<string>("");
-
   const [gameData, setGameData] = useState<GameDocument | null>();
+
+  // Game settings state
+  const [impostorCount, setImpostorCount] = useState<number>(1);
+  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("random");
 
   useEffect(() => {
     const currentUserId = getOrCreateUserId();
@@ -40,14 +64,36 @@ export default function GamePage({ params }: GamePageProps) {
   const startGame = (): void => {
     const startedGame = gameData;
     if (startedGame) {
-      startedGame.data.start = true;
-      // Select a random word pair index from the impostorPairs array
-      const randomWordIndex = Math.floor(Math.random() * impostorPairs.length);
-      startedGame.data.wordIndex = randomWordIndex;
-      // Select a random user from the users array to be the impostor
       const userList = startedGame.data.users;
-      const randomIndex = Math.floor(Math.random() * userList.length);
-      startedGame.data.impostor = userList[randomIndex] || "";
+      const wordPairs = getWordPairsByTheme(selectedTheme);
+
+      // Select a random word pair index from the selected theme
+      const randomWordIndex = Math.floor(Math.random() * wordPairs.length);
+
+      // Select random impostors based on the count
+      const shuffledUsers = [...userList].sort(() => Math.random() - 0.5);
+      const selectedImpostors = shuffledUsers.slice(
+        0,
+        Math.min(impostorCount, userList.length)
+      );
+
+      // Initialize user names if not exists
+      const userNames: Record<string, string> =
+        startedGame.data.userNames || {};
+      userList.forEach((userId) => {
+        if (!userNames[userId]) {
+          userNames[userId] = userId; // Default to userId as display name
+        }
+      });
+
+      startedGame.data.start = true;
+      startedGame.data.wordIndex = randomWordIndex;
+      startedGame.data.impostor = selectedImpostors[0] || ""; // Keep for backward compatibility
+      startedGame.data.impostors = selectedImpostors;
+      startedGame.data.impostorCount = impostorCount;
+      startedGame.data.theme = selectedTheme;
+      startedGame.data.userNames = userNames;
+
       setDocument("games", gameid, startedGame.data);
     } else {
       console.error("Error starting game");
@@ -75,7 +121,7 @@ export default function GamePage({ params }: GamePageProps) {
       <div className="max-w-md mx-auto w-full space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-bold">Impostor Host</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Odd 1 Out Host</h1>
           <div className="bg-muted rounded-lg p-3">
             <p className="text-sm text-muted-foreground">Game Code</p>
             <p className="text-xl font-mono font-bold tracking-wider">
@@ -92,18 +138,26 @@ export default function GamePage({ params }: GamePageProps) {
             </div>
 
             <div className="bg-card border rounded-lg p-4 space-y-3">
-              {gameData.data.impostor === userId ? (
+              {gameData.data.impostors?.includes(userId) ? (
                 <div className="text-center space-y-2">
                   <p className="text-sm text-muted-foreground">The word is:</p>
                   <p className="text-2xl font-bold text-red-700">
-                    {impostorPairs[gameData.data.wordIndex][1]}
+                    {
+                      getWordPairsByTheme(
+                        (gameData.data.theme as ThemeKey) || "random"
+                      )[gameData.data.wordIndex][1]
+                    }
                   </p>
                 </div>
               ) : (
                 <div className="text-center space-y-2">
                   <p className="text-sm text-muted-foreground">The word is:</p>
                   <p className="text-2xl font-bold">
-                    {impostorPairs[gameData.data.wordIndex][0]}
+                    {
+                      getWordPairsByTheme(
+                        (gameData.data.theme as ThemeKey) || "random"
+                      )[gameData.data.wordIndex][0]
+                    }
                   </p>
                 </div>
               )}
@@ -114,8 +168,9 @@ export default function GamePage({ params }: GamePageProps) {
                 onClick={async () => {
                   if (gameData) {
                     // Store the current word as the last word when stopping the game
-                    const currentWord =
-                      impostorPairs[gameData.data.wordIndex][0];
+                    const currentWord = getWordPairsByTheme(
+                      (gameData.data.theme as ThemeKey) || "random"
+                    )[gameData.data.wordIndex][0];
                     const updatedData = {
                       ...gameData.data,
                       start: false,
@@ -147,6 +202,86 @@ export default function GamePage({ params }: GamePageProps) {
               </div>
             )}
 
+            {/* Game Settings */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Game Settings</CardTitle>
+                <CardDescription>
+                  Configure your game before starting
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Impostor Count Toggle */}
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label
+                      htmlFor="impostor-count"
+                      className="text-sm font-medium"
+                    >
+                      Number of Odd Ones Out
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      {impostorCount === 1
+                        ? "1 Odd One Out (Classic)"
+                        : impostorCount === 2
+                        ? "2 Odd Ones Out (Recommended for 6+ players)"
+                        : "3 Odd Ones Out (For large groups)"}
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setImpostorCount(Math.max(1, impostorCount - 1))
+                      }
+                      disabled={impostorCount <= 1}
+                    >
+                      -
+                    </Button>
+                    <span className="w-8 text-center font-medium">
+                      {impostorCount}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setImpostorCount(Math.min(3, impostorCount + 1))
+                      }
+                      disabled={
+                        impostorCount >= 3 ||
+                        (gameData?.data.users.length || 0) < 6
+                      }
+                    >
+                      +
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Theme Selector */}
+                <div className="space-y-2">
+                  <Label htmlFor="theme-select" className="text-sm font-medium">
+                    Game Theme
+                  </Label>
+                  <Select
+                    value={selectedTheme}
+                    onValueChange={(value: ThemeKey) => setSelectedTheme(value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a theme" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(themes).map(([key, label]) => (
+                        <SelectItem key={key} value={key}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+
             <div className="space-y-3">
               <h2 className="text-lg font-semibold text-center">
                 Players ({gameData?.data.users.length || 0})
@@ -158,7 +293,9 @@ export default function GamePage({ params }: GamePageProps) {
                       key={idx}
                       className="border rounded-lg p-3 flex items-center justify-between bg-card"
                     >
-                      <span className="font-medium truncate">{s}</span>
+                      <span className="font-medium truncate">
+                        {gameData.data.userNames?.[s] || s}
+                      </span>
                       <div className="flex gap-1 flex-shrink-0">
                         {s === gameData.data.creator ? (
                           <Badge variant="default" className="text-xs">
@@ -169,9 +306,9 @@ export default function GamePage({ params }: GamePageProps) {
                             Player
                           </Badge>
                         )}
-                        {s === gameData.data.impostor && (
+                        {gameData.data.impostors?.includes(s) && (
                           <Badge variant="destructive" className="text-xs">
-                            Impostor
+                            Odd One Out
                           </Badge>
                         )}
                       </div>

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Imposter Game",
-  description: "A fun word guessing game where one player is the impostor",
+  title: "Odd 1 Out",
+  description: "A fun word guessing game where one player is the odd one out",
 };
 
 export const viewport = {

@@ -1,1 +1,1 @@
-Impostor game
+Odd 1 Out Game

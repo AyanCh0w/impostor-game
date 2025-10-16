@@ -68,7 +68,7 @@ export default function Home() {
         >
           <Image
             src="/app-logo.svg"
-            alt="Impostor Game Logo"
+            alt="Odd 1 Out Game Logo"
             width={112}
             height={112}
             className="w-full h-full"
@@ -77,10 +77,10 @@ export default function Home() {
           />
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
-          Imposter Game
+          Odd 1 Out
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base">
-          A fun word guessing game
+          A fun word guessing game where one player is the odd one out
         </p>
       </div>
 
@@ -144,7 +144,7 @@ export default function Home() {
       </div>
       <footer className="fixed bottom-2 left-0 right-0 flex justify-center pointer-events-none">
         <span className="text-xs text-muted-foreground select-none">
-          v0.1.3 (Last word view)
+          v0.2.0 (Multiple Odd Ones Out, Game Themes, Name Changes)
         </span>
       </footer>
     </div>
